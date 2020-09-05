@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:simple_blog/domain/domain.dart';
-import 'package:simple_blog/domain/entities/comment_entity.dart';
-import 'package:simple_blog/service/blog_repository.dart';
+import 'package:simple_blog/service/service.dart';
 
 class PostScreenModel extends ChangeNotifier {
   PostScreenModel({@required BlogRepository blogRepository})

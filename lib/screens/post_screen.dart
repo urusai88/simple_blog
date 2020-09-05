@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_blog/domain/domain.dart';
-import 'package:simple_blog/domain/entities/comment_entity.dart';
-import 'package:simple_blog/domain/models/models.dart';
-import 'package:simple_blog/service/blog_repository.dart';
+import 'package:simple_blog/service/service.dart';
 import 'package:simple_blog/widgets/widgets.dart';
 
 class PostScreen extends StatefulWidget {
@@ -22,11 +20,20 @@ class _PostScreenState extends State<PostScreen> {
   void initState() {
     super.initState();
 
-    _model = PostScreenModel(
-      blogRepository: Provider.of<BlogRepository>(context, listen: false),
-    );
-    _model.loadPost(widget.postId);
-    _model.loadComments(widget.postId);
+    final persistent = Provider.of<Persistent>(context, listen: false);
+    final persistKey = 'post-screen-model[${widget.postId}]}';
+
+    try {
+      _model = persistent.fetch<PostScreenModel>(persistKey);
+    } catch (e) {
+      _model = PostScreenModel(
+        blogRepository: Provider.of<BlogRepository>(context, listen: false),
+      );
+      _model.loadPost(widget.postId);
+      _model.loadComments(widget.postId);
+
+      persistent.persist(persistKey, _model);
+    }
   }
 
   @override

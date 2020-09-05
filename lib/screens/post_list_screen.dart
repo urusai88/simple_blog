@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_blog/domain/domain.dart';
-import 'package:simple_blog/domain/models/models.dart';
-import 'package:simple_blog/domain/models/post_list_model.dart';
 import 'package:simple_blog/screens/screens.dart';
-import 'package:simple_blog/service/blog_repository.dart';
+import 'package:simple_blog/service/service.dart';
 import 'package:simple_blog/widgets/widgets.dart';
 
 typedef OnPostTapCallback = void Function(PostEntity post);
@@ -22,7 +20,7 @@ class _PostListScreenState extends State<PostListScreen> {
     super.initState();
 
     model = PostListModel(
-      repository: Provider.of<BlogRepository>(context, listen: false),
+      blogRepository: Provider.of<BlogRepository>(context, listen: false),
     );
     model.loadPosts();
   }

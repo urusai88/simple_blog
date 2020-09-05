@@ -1,11 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:simple_blog/domain/domain.dart';
-import 'package:simple_blog/service/blog_repository.dart';
+import 'package:simple_blog/service/service.dart';
 
 class PostListModel extends ChangeNotifier {
-  PostListModel({@required this.repository});
+  PostListModel({@required BlogRepository blogRepository})
+      : _blogRepository = blogRepository;
 
-  final BlogRepository repository;
+  final BlogRepository _blogRepository;
 
   String error;
   List<PostEntity> posts;
@@ -14,7 +15,7 @@ class PostListModel extends ChangeNotifier {
 
   Future<void> loadPosts() async {
     try {
-      final postList = await repository.listPosts();
+      final postList = await _blogRepository.listPosts();
 
       posts = postList;
       notifyListeners();
@@ -31,7 +32,7 @@ class PostListModel extends ChangeNotifier {
       return;
     }
 
-    final postList = await repository.listPosts(offset: posts.length);
+    final postList = await _blogRepository.listPosts(offset: posts.length);
     // 5 - limit
     if (postList.length < 5) {
       hasReachedMax = true;

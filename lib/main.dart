@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_blog/screens/screens.dart';
-import 'package:simple_blog/service/blog_repository.dart';
+import 'package:simple_blog/service/service.dart';
 
 void main() {
   Widget app = SimpleBlogApplication();
 
   app = MultiProvider(
     providers: [
+      Provider(
+        create: (context) => Persistent(),
+      ),
       Provider(
         create: (context) => BlogRepository(
           baseUrl: 'https://jsonplaceholder.typicode.com/',
